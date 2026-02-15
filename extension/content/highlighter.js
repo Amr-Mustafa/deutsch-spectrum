@@ -186,6 +186,7 @@ const Highlighter = {
       const boundHideTooltip = this.hideTooltip.bind(this);
       highlight.addEventListener('mouseenter', boundShowTooltip);
       highlight.addEventListener('mouseleave', boundHideTooltip);
+      highlight.addEventListener('mouseleave', this.clearHighlights.bind(this, this.currentContainer));
 
       // Wrap the range in the highlight span
       try {
