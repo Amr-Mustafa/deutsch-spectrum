@@ -99,6 +99,15 @@ async function handleClick(event) {
   const isAnalyzeHotkey = checkHotkey(event, [analyzeModifier]);
   const isAnkiHotkey = checkHotkey(event, [ankiModifier1, ankiModifier2]);
 
+  // Clear highlights if clicking without modifier keys (unless clicking on a highlight)
+  const clickedElement = event.target;
+  const isClickingHighlight = clickedElement.classList && clickedElement.classList.contains('german-pos-highlight');
+
+  if (!isAnalyzeHotkey && !isAnkiHotkey && !isClickingHighlight) {
+    window.Highlighter.clearAllHighlights();
+    return;
+  }
+
   if (isAnalyzeHotkey) {
     // Analyze word
     event.preventDefault();
