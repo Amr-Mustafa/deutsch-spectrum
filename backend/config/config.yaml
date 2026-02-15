@@ -1,0 +1,40 @@
+# DeutschSpectrum Backend Configuration
+
+# Default environment (development, production)
+default_environment: production
+
+# Environment-specific configurations
+environments:
+  development:
+    host: "0.0.0.0"
+    port: 8000
+    reload: true
+    log_level: "debug"
+    cors_origins:
+      - "chrome-extension://*"
+      - "http://localhost:*"
+      - "http://127.0.0.1:*"
+    spacy_model: "de_core_news_lg"
+    cache_enabled: true
+    cache_max_size: 1000
+    cache_ttl: 3600
+
+  production:
+    host: "0.0.0.0"
+    port: null  # Use $PORT environment variable
+    reload: false
+    log_level: "info"
+    cors_origins:
+      - "*"  # Allow all origins for production (can be restricted later)
+    spacy_model: "de_core_news_lg"
+    cache_enabled: true
+    cache_max_size: 1000
+    cache_ttl: 3600
+
+# Global settings (apply to all environments)
+global:
+  api_version: "v1"
+  api_prefix: "/api/v1"
+  healthcheck_path: "/api/v1/health"
+  docs_url: "/docs"
+  redoc_url: "/redoc"

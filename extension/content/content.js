@@ -6,7 +6,8 @@
 
 // Global state
 let isExtensionEnabled = true;
-let API_BASE_URL = 'http://localhost:8000';
+// Get default API base URL from config
+let API_BASE_URL = getEnvironmentConfig(getDefaultEnvironment()).backendUrl;
 
 // Hotkey settings
 let analyzeModifier = 'shiftKey';
@@ -45,7 +46,7 @@ async function init() {
     ]);
 
     isExtensionEnabled = settings.enabled !== false;
-    API_BASE_URL = settings.backendUrl || 'http://localhost:8000';
+    API_BASE_URL = settings.backendUrl || getEnvironmentConfig(getDefaultEnvironment()).backendUrl;
 
     // Load hotkey settings
     analyzeModifier = settings.analyzeModifier || 'shiftKey';

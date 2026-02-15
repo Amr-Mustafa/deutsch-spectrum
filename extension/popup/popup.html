@@ -106,6 +106,14 @@
           <div class="settings-group">
             <h3>Backend Settings</h3>
             <div class="setting-row">
+              <label for="environment-select">Environment:</label>
+              <select id="environment-select">
+                <option value="railway">Railway Production</option>
+                <option value="local">Local Development</option>
+                <option value="custom">Custom URL</option>
+              </select>
+            </div>
+            <div class="setting-row">
               <label for="backend-url">Backend URL:</label>
               <input type="text" id="backend-url" value="http://localhost:8000" placeholder="http://localhost:8000">
             </div>
@@ -143,6 +151,7 @@
     </div>
   </div>
 
+  <script src="../config/config.js"></script>
   <script src="../config/pos_colors.js"></script>
   <script src="popup.js"></script>
 </body>

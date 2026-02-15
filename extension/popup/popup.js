@@ -6,6 +6,7 @@
 // DOM elements
 let enableToggle;
 let statusText;
+let environmentSelect;
 let backendUrlInput;
 let analyzeModifierSelect;
 let ankiModifier1Select;
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Get DOM elements
   enableToggle = document.getElementById('enable-toggle');
   statusText = document.getElementById('status-text');
+  environmentSelect = document.getElementById('environment-select');
   backendUrlInput = document.getElementById('backend-url');
   analyzeModifierSelect = document.getElementById('analyze-modifier');
   ankiModifier1Select = document.getElementById('anki-modifier1');
@@ -48,6 +50,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Attach event listeners
   enableToggle.addEventListener('change', handleToggleChange);
+  environmentSelect.addEventListener('change', handleEnvironmentChange);
   testAnkiBtn.addEventListener('click', testAnkiConnection);
   saveSettingsBtn.addEventListener('click', handleSaveSettings);
 });
@@ -81,6 +84,7 @@ async function loadSettings() {
   try {
     const settings = await chrome.storage.sync.get([
       'enabled',
+      'environment',
       'backendUrl',
       'analyzeModifier',
       'ankiModifier1',
@@ -95,8 +99,20 @@ async function loadSettings() {
     enableToggle.checked = isEnabled;
     updateStatus(isEnabled);
 
-    // Set backend URL
-    backendUrlInput.value = settings.backendUrl || 'http://localhost:8000';
+    // Set environment and backend URL
+    const environment = settings.environment || getDefaultEnvironment();
+    environmentSelect.value = environment;
+
+    // If no custom backendUrl saved, use environment default
+    if (!settings.backendUrl) {
+      const envConfig = getEnvironmentConfig(environment);
+      backendUrlInput.value = envConfig.backendUrl;
+    } else {
+      backendUrlInput.value = settings.backendUrl;
+    }
+
+    // Update backend URL readonly state
+    updateBackendUrlState();
 
     // Set hotkey modifiers
     analyzeModifierSelect.value = settings.analyzeModifier || 'shiftKey';
@@ -109,6 +125,36 @@ async function loadSettings() {
     ankiNoteTypeInput.value = settings.ankiNoteType || 'Basic';
   } catch (error) {
     console.error('Error loading settings:', error);
+  }
+}
+
+/**
+ * Handle environment change
+ */
+function handleEnvironmentChange() {
+  const environment = environmentSelect.value;
+  const envConfig = getEnvironmentConfig(environment);
+
+  // Update backend URL from environment config
+  backendUrlInput.value = envConfig.backendUrl;
+
+  // Update readonly state
+  updateBackendUrlState();
+}
+
+/**
+ * Update backend URL input state based on environment
+ */
+function updateBackendUrlState() {
+  const environment = environmentSelect.value;
+
+  // Only allow editing for custom environment
+  if (environment === 'custom') {
+    backendUrlInput.removeAttribute('readonly');
+    backendUrlInput.style.backgroundColor = '';
+  } else {
+    backendUrlInput.setAttribute('readonly', 'true');
+    backendUrlInput.style.backgroundColor = '#f5f5f5';
   }
 }
 
@@ -208,6 +254,7 @@ async function handleSaveSettings() {
   try {
     // Save all settings
     await chrome.storage.sync.set({
+      environment: environmentSelect.value,
       backendUrl,
       analyzeModifier: analyzeModifierSelect.value,
       ankiModifier1: ankiModifier1Select.value,

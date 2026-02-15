@@ -11,7 +11,8 @@
 
   "host_permissions": [
     "http://localhost:8000/*",
-    "http://127.0.0.1:8000/*"
+    "http://127.0.0.1:8000/*",
+    "https://deutsch-spectrum-production.up.railway.app/*"
   ],
 
   "background": {
@@ -22,6 +23,7 @@
     {
       "matches": ["<all_urls>"],
       "js": [
+        "config/config.js",
         "config/pos_colors.js",
         "content/text_extractor.js",
         "content/highlighter.js",

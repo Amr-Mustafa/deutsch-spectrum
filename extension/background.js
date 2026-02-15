@@ -3,14 +3,22 @@
  * Manages extension state and badge
  */
 
+// Import configuration (using importScripts for service workers)
+importScripts('config/config.js');
+
 // Initialize on install
 chrome.runtime.onInstalled.addListener(() => {
   console.log('German POS Highlighter installed');
 
+  // Get default environment configuration
+  const defaultEnv = getDefaultEnvironment();
+  const envConfig = getEnvironmentConfig(defaultEnv);
+
   // Set default values
   chrome.storage.sync.set({
     enabled: true,
-    backendUrl: 'http://localhost:8000'
+    environment: defaultEnv,
+    backendUrl: envConfig.backendUrl
   });
 
   // Set initial badge
