@@ -1,3 +1,8 @@
-# This file tells Railway to set up a Python environment
-# Actual dependencies are in backend/requirements.txt
--r backend/requirements.txt
+# Python dependencies for DeutschSpectrum backend
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+spacy==3.7.2
+pydantic==2.5.3
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+cachetools==5.3.2
