@@ -114,10 +114,11 @@ async def root():
 
 @app.get("/api/v1/health", response_model=HealthResponse, tags=["health"])
 async def health_check():
-    """Health check endpoint."""
+    """Health check endpoint - returns 200 OK even while model is loading."""
     model_loaded = analyzer is not None
+    # Always return 200 OK so Railway doesn't fail the health check during model loading
     return HealthResponse(
-        status="healthy" if model_loaded else "unhealthy",
+        status="ready" if model_loaded else "loading",
         model_loaded=model_loaded
     )
 
