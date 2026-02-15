@@ -103,8 +103,15 @@ async function handleClick(event) {
   const clickedElement = event.target;
   const isClickingHighlight = clickedElement.classList && clickedElement.classList.contains('german-pos-highlight');
 
-  if (!isAnalyzeHotkey && !isAnkiHotkey && !isClickingHighlight) {
-    window.Highlighter.clearAllHighlights();
+  // Auto-clear highlights on regular clicks (not on highlights themselves)
+  if (!isAnalyzeHotkey && !isAnkiHotkey) {
+    if (!isClickingHighlight) {
+      // Clicking somewhere else - clear highlights
+      if (window.Highlighter && typeof window.Highlighter.clearAllHighlights === 'function') {
+        window.Highlighter.clearAllHighlights();
+      }
+    }
+    // Don't prevent default or stop propagation for regular clicks
     return;
   }
 
