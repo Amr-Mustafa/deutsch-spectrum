@@ -76,6 +76,9 @@ function attachEventListeners() {
   // Listen for clicks with modifier keys
   document.addEventListener('click', handleClick, true);
 
+  // Listen for clicks to auto-clear highlights (separate listener with bubbling phase)
+  document.addEventListener('click', handleAutoClear, false);
+
   // Listen for messages from popup
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'toggleHighlighting') {
@@ -91,6 +94,33 @@ function attachEventListeners() {
 }
 
 /**
+ * Auto-clear highlights when clicking elsewhere
+ */
+function handleAutoClear(event) {
+  if (!isExtensionEnabled) return;
+
+  // Check if clicking on a highlight or inside a highlight
+  let element = event.target;
+  let isHighlight = false;
+
+  // Check if clicked element or any parent is a highlight
+  while (element && element !== document) {
+    if (element.classList && element.classList.contains('german-pos-highlight')) {
+      isHighlight = true;
+      break;
+    }
+    element = element.parentElement;
+  }
+
+  // Clear highlights if not clicking on a highlight
+  if (!isHighlight) {
+    if (window.Highlighter && typeof window.Highlighter.clearAllHighlights === 'function') {
+      window.Highlighter.clearAllHighlights();
+    }
+  }
+}
+
+/**
  * Handle click events - check for analyze or Anki hotkey
  */
 async function handleClick(event) {
@@ -98,22 +128,6 @@ async function handleClick(event) {
 
   const isAnalyzeHotkey = checkHotkey(event, [analyzeModifier]);
   const isAnkiHotkey = checkHotkey(event, [ankiModifier1, ankiModifier2]);
-
-  // Clear highlights if clicking without modifier keys (unless clicking on a highlight)
-  const clickedElement = event.target;
-  const isClickingHighlight = clickedElement.classList && clickedElement.classList.contains('german-pos-highlight');
-
-  // Auto-clear highlights on regular clicks (not on highlights themselves)
-  if (!isAnalyzeHotkey && !isAnkiHotkey) {
-    if (!isClickingHighlight) {
-      // Clicking somewhere else - clear highlights
-      if (window.Highlighter && typeof window.Highlighter.clearAllHighlights === 'function') {
-        window.Highlighter.clearAllHighlights();
-      }
-    }
-    // Don't prevent default or stop propagation for regular clicks
-    return;
-  }
 
   if (isAnalyzeHotkey) {
     // Analyze word
