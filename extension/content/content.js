@@ -28,6 +28,9 @@ let lastAnalyzedWord = null;
 let lastAnalyzedSentence = null;
 let lastAnalysisResult = null;
 
+// Prevent auto-clear immediately after highlighting
+let justHighlighted = false;
+
 /**
  * Initialize the content script
  */
@@ -98,6 +101,12 @@ function attachEventListeners() {
  */
 function handleAutoClear(event) {
   if (!isExtensionEnabled) return;
+
+  // Don't clear if we just highlighted (prevent immediate clear)
+  if (justHighlighted) {
+    justHighlighted = false;
+    return;
+  }
 
   // Check if clicking on a highlight or inside a highlight
   let element = event.target;
@@ -233,6 +242,8 @@ async function handleAnalyzeWord(event) {
     if (container) {
       // Apply highlights (only for the clicked word and its separable parts)
       window.Highlighter.applyHighlights(container, analysis, sentence, word);
+      // Set flag to prevent immediate auto-clear
+      justHighlighted = true;
     }
 
     console.log(`✓ Word highlighted. Use ${ankiModifier1.replace('Key', '')}+${ankiModifier2.replace('Key', '')}+Click to send to Anki`);
