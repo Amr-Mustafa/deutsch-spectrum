@@ -1,0 +1,58 @@
+/**
+ * Styles for German POS Highlighter
+ */
+
+.german-pos-highlight {
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: help;
+  border-radius: 3px;
+  padding: 2px 4px;
+  margin: 0 1px;
+  display: inline;
+  line-height: inherit;
+}
+
+.german-pos-highlight:hover {
+  opacity: 0.8 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+/* Prevent text selection issues */
+.german-pos-highlight::selection {
+  background-color: inherit;
+}
+
+/* Optional: Add a subtle underline to indicate it's interactive */
+.german-pos-highlight {
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
+}
+
+.german-pos-highlight:hover {
+  border-bottom-style: solid;
+}
+
+/* Ensure highlights don't break the layout */
+.german-pos-highlight {
+  white-space: normal;
+  word-wrap: normal;
+}
+
+/* Custom instant tooltip */
+.german-pos-tooltip {
+  /* Removed animation - was causing positioning issues */
+  opacity: 1 !important;
+}
+
+.german-pos-tooltip .tooltip-row {
+  margin: 3px 0;
+}
+
+.german-pos-tooltip .tooltip-row:first-child {
+  margin-top: 0;
+}
+
+.german-pos-tooltip .tooltip-row:last-child {
+  margin-bottom: 0;
+}

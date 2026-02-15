@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeutschSpectrum</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <h1>DeutschSpectrum</h1>
+      <p class="subtitle">Shift+Click any German word to analyze</p>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="home">Home</button>
+      <button class="tab-btn" data-tab="legend">Legend</button>
+      <button class="tab-btn" data-tab="settings">Settings</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Home Tab -->
+      <div class="tab-pane active" id="home-tab">
+        <!-- Support Section -->
+        <div class="support-section">
+          <div class="support-content">
+            <span class="support-emoji">☕</span>
+            <div class="support-text">
+              <p class="support-message">Loving the rainbow grammar?</p>
+              <p class="support-description">Fuel more features with caffeine! ☕✨</p>
+            </div>
+          </div>
+          <a href="https://buy.stripe.com/dRm3cngRz9KGcv4fSldby00" target="_blank" class="support-button">
+            Buy Me a Kaffee! 🇩🇪
+          </a>
+        </div>
+
+        <div class="toggle-section">
+      <div class="toggle-row">
+        <span class="toggle-label">Enable Highlighting</span>
+        <label class="switch">
+          <input type="checkbox" id="enable-toggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <p class="status-text" id="status-text">Active</p>
+        </div>
+      </div>
+
+      <!-- Legend Tab -->
+      <div class="tab-pane" id="legend-tab">
+        <div class="legend-section">
+      <h3>Color Legend</h3>
+      <div id="color-legend" class="color-legend">
+        <!-- Populated by popup.js -->
+      </div>
+        </div>
+      </div>
+
+      <!-- Settings Tab -->
+      <div class="tab-pane" id="settings-tab">
+        <div class="settings-section">
+          <!-- Hotkey Settings Group -->
+          <div class="settings-group">
+            <h3>Hotkey Settings</h3>
+
+            <div class="setting-row">
+              <label>Analyze Word Hotkey:</label>
+              <div class="hotkey-selector">
+                <select id="analyze-modifier">
+                  <option value="shiftKey">Shift</option>
+                  <option value="ctrlKey">Ctrl</option>
+                  <option value="altKey">Alt</option>
+                  <option value="metaKey">Meta/Cmd</option>
+                </select>
+                <span>+ Click</span>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <label>Send to Anki Hotkey:</label>
+              <div class="hotkey-selector">
+                <select id="anki-modifier1">
+                  <option value="shiftKey">Shift</option>
+                  <option value="ctrlKey" selected>Ctrl</option>
+                  <option value="altKey">Alt</option>
+                  <option value="metaKey">Meta/Cmd</option>
+                </select>
+                <span>+</span>
+                <select id="anki-modifier2">
+                  <option value="">None</option>
+                  <option value="shiftKey" selected>Shift</option>
+                  <option value="ctrlKey">Ctrl</option>
+                  <option value="altKey">Alt</option>
+                  <option value="metaKey">Meta/Cmd</option>
+                </select>
+                <span>+ Click</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Backend Settings Group -->
+          <div class="settings-group">
+            <h3>Backend Settings</h3>
+            <div class="setting-row">
+              <label for="backend-url">Backend URL:</label>
+              <input type="text" id="backend-url" value="http://localhost:8000" placeholder="http://localhost:8000">
+            </div>
+          </div>
+
+          <!-- Anki Settings Group -->
+          <div class="settings-group">
+            <h3>Anki Settings</h3>
+            <div class="setting-row">
+              <label for="anki-url">AnkiConnect URL:</label>
+              <input type="text" id="anki-url" value="http://localhost:8765" placeholder="http://localhost:8765">
+            </div>
+
+            <div class="setting-row">
+              <label for="anki-deck">Anki Deck Name:</label>
+              <input type="text" id="anki-deck" value="German" placeholder="German">
+            </div>
+
+            <div class="setting-row">
+              <label for="anki-note-type">Note Type:</label>
+              <input type="text" id="anki-note-type" value="Basic" placeholder="Basic">
+            </div>
+
+            <button id="test-anki" class="btn-secondary">Test Anki Connection</button>
+            <p class="help-text" id="anki-status">Install AnkiConnect plugin in Anki to use this feature</p>
+          </div>
+
+          <button id="save-settings" class="btn-primary">Save All Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p class="version">v1.0.0</p>
+    </div>
+  </div>
+
+  <script src="../config/pos_colors.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
